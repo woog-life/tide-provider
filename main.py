@@ -95,7 +95,6 @@ class TransitDirection(IntEnum):
 @dataclasses.dataclass
 class TideInformation:
     line_code: LineCode
-    # honestly, no idea. empty in the example data
     gauge_number: GaugeNumber
     moon_phase: Optional[MoonPhase]
     water_level: WaterLevel
