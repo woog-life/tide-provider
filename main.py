@@ -139,7 +139,7 @@ with open("resources/cuxhaven_2023.txt", encoding="ISO-8859-1") as f:
     seen_data_delim = False
     for row in spamreader:
         if "EEE" in row:
-            # signalises the end
+            # signalizes the end
             break
         elif seen_data_delim and row:
             infos.append(TideInformation.from_row(row))
