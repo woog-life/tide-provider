@@ -6,7 +6,6 @@ from typing import Self, Optional
 
 
 class LineCode(Enum):
-    # data without heights
     WithoutHeights = "VB1"
     WithHeights = "VB2"
 
@@ -88,7 +87,7 @@ class TimeZoneModifier:
 class TransitDirection(IntEnum):
     HighWaterUpperTransit = 1
     LowWaterUpperTransit = 2
-    HightWaterLowerTransit = 3
+    HighWaterLowerTransit = 3
     LowWaterLowerTransit = 4
 
 
