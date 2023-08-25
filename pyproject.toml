@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "tide_provider"
+description = "Provides tidal data to API"
+version = "1.0.0"
+authors = ["Blindfolded Surgery <team@blindfolded.surgery>"]
+license = "MIT"
+
+[tool.poetry.scripts]
+tide_provider = "tide_provider.main:main"
+
+[tool.poetry.dependencies]
+pendulum = "^2.0.0"
+python = "~3.11"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.0.0"
+mypy = "^1.4.0"
+pytest = "^7.1.2"
+ruff = "^0.0.285"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+check_untyped_defs = true
+disallow_untyped_defs = false
+
+[tool.ruff]
+extend-select = [
+    "I001",
+]

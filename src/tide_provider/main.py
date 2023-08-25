@@ -132,17 +132,22 @@ class TideInformation:
         )
 
 
-infos = []
-with open("resources/cuxhaven_2023.txt", encoding="ISO-8859-1") as f:
-    spamreader = csv.reader(f, delimiter="#")
-    seen_data_delim = False
-    for row in spamreader:
-        if "EEE" in row:
-            # signalizes the end
-            break
-        elif seen_data_delim and row:
-            infos.append(TideInformation.from_row(row))
-        else:
-            seen_data_delim = "LLL" in row
+def main():
+    infos = []
+    with open("resources/cuxhaven_2023.txt", encoding="ISO-8859-1") as f:
+        spamreader = csv.reader(f, delimiter="#")
+        seen_data_delim = False
+        for row in spamreader:
+            if "EEE" in row:
+                # signalizes the end
+                break
+            elif seen_data_delim and row:
+                infos.append(TideInformation.from_row(row))
+            else:
+                seen_data_delim = "LLL" in row
 
-print(*infos, sep="\n")
+    print(*infos, sep="\n")
+
+
+if __name__ == '__main__':
+    main()
