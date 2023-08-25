@@ -1,10 +1,13 @@
 import csv
 import dataclasses
+import os
 import re
 from datetime import date, datetime, time, timedelta, timezone, tzinfo
 from enum import Enum, IntEnum
 from pathlib import Path
 from typing import Optional, Self
+
+from tide_provider.api import ApiClient, TidalDataExtremum
 
 # Input example: "+ 1:00"
 timezone_modifier_pattern = re.compile(
@@ -152,6 +155,13 @@ class TideInformation:
             self.timezone_info,
         )
 
+    def to_dto(self) -> TidalDataExtremum:
+        return {
+            "isHighTide": self.water_level == WaterLevel.HighWater,
+            "time": self.datetime.astimezone(timezone.utc).isoformat(),
+            "height": self.height,
+        }
+
 
 def parse_info(file_path: Path) -> list[TideInformation]:
     infos = []
@@ -172,6 +182,26 @@ def parse_info(file_path: Path) -> list[TideInformation]:
 
 def main():
     print(*parse_info(Path("resources/cuxhaven_2023.txt")), sep="\n")
+
+
+def publish():
+    token = os.getenv("WOOG_API_TOKEN")
+    if not token:
+        raise ValueError("Missing WOOG_API_TOKEN env var")
+
+    resources = Path("resources")
+    with ApiClient(token) as client:
+        for lake_id, file_name in (
+            ("d074654c-dedd-46c3-8042-af55c93c910e", "cuxhaven_2023.txt"),
+            ("18e6931a-3729-4ad9-8301-03c5980f82b6", "husum_2023.txt"),
+        ):
+            infos = parse_info(resources / file_name)
+            print(
+                "Uploading data from",
+                file_name,
+                "(This will take about two minutes)",
+            )
+            client.push_tidal_data(lake_id, [info.to_dto() for info in infos[100:300]])
 
 
 if __name__ == "__main__":

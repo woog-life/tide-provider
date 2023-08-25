@@ -7,9 +7,11 @@ license = "MIT"
 
 [tool.poetry.scripts]
 tide_provider = "tide_provider.main:main"
+publish = "tide_provider.main:publish"
 
 [tool.poetry.dependencies]
 python = "~3.11"
+httpx = "^0.24.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.0.0"
