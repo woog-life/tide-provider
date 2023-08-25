@@ -1,4 +1,4 @@
-    Bundesamt f�r Seeschifffahrt und Hydrographie (BSH), Hamburg      23.12.2019
+    Bundesamt für Seeschifffahrt und Hydrographie (BSH), Hamburg      23.12.2019
     Federal Maritime and Hydrogaphic Agency, Hamburg, Germany
     section: M11 Tides
 
@@ -21,26 +21,26 @@
                      total number of years
     A08 Position   : geographic coordinates
     A11 Zeitzone   : legal time zone
-    A12 Position GK: Gauss Kr�ger Coordinates or UTM
+    A12 Position GK: Gauss Krüger Coordinates or UTM
     A13 Messstelle : gauge number of Federal Waterways and Shipping
                                      Administration (WSV)
     B01 Sommerzeit : Daylight Saving Time
     C01 Analyse-Ber: method of analysis (independent or with refernce station)
                      + number of tidal constituents
     C02 Datenumfang: data extent
-    C03 H�henniveau: reference level     PNP = zero level of the gauge
+    C03 Höhenniveau: reference level     PNP = zero level of the gauge
                                          NHN = normal high zero,
                                                german vertical geodetic datum
                                          SKN = chart datum
     C04 EinheitZeit: unit of time     StdMin = hours,minutes
-    C05 EinheitH�he: unit of height        m = metre
+    C05 EinheitHöhe: unit of height        m = metre
                                           dm = decimetre
                                           cm = centimetre
                                           mm = millimetre
                                           ft = foot
     D01 PNP u. NHN : PNP relative to NHN
     D02 SKN u. NHN : SKN relative to NHN
-    D03 SKN �. PNP : SKN relative to PNP
+    D03 SKN ü. PNP : SKN relative to PNP
     F01 MHWI       : mean high water lunitidal interval
     F02 MNWI       : mean low water lunitidal interval
     G01 MHW        : mean high water
@@ -88,18 +88,18 @@ A03#PegelNr.   :#DE__508P#
 A04#GT-Name    :#Hamburg, St. Pauli, Elbe#
 A06#GT-Jahr    :#      2019#
 A07#Def.-Jahr  :#2016#19#
-A08#Position   :#53�32'44''N   9�58'12''E WGS84#
+A08#Position   :#53°32'44''N   9°58'12''E WGS84#
 A11#Zeitzone   :#UTC+ 1h00min (MEZ)#
 A12#Position GK:# 35 64369.60 R  59 35349.57 H#
 A13#Messstelle :#304     #
-C01#Analyse-Ber:#selbst�ndig#43#
-C02#Datenumfang:#Zeiten u. H�hen: HW NW      #
-C03#H�henniveau:#PNP#
+C01#Analyse-Ber:#selbständig#43#
+C02#Datenumfang:#Zeiten u. Höhen: HW NW      #
+C03#Höhenniveau:#PNP#
 C04#EinheitZeit:#StdMin#
-C05#EinheitH�he:# m#
+C05#EinheitHöhe:# m#
 D01#PNP u. NHN :#- 5.00 #
 D02#SKN u. NHN :#- 1.90 #
-D03#SKN �. PNP :#  3.10 #
+D03#SKN ü. PNP :#  3.10 #
 F01#MHWI       :#15:22   #
 F02#MNWI       :#22:31   #
 G01#MHW        :#  7.12 #
