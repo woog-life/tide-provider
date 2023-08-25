@@ -113,7 +113,7 @@ class TideInformation:
     day_of_the_week: DayOfTheWeek
     date: date
     time: time
-    height: float
+    height: str
     # can be between 1 - 7, should this be an `Enum` with self-made names?
     quality: Optional[int]
     day_of_the_year: int
@@ -135,7 +135,7 @@ class TideInformation:
             day_of_the_week=DayOfTheWeek(_row[4]),
             date=parse_date(_row[5]),
             time=parse_time(_row[6]),
-            height=float(_row[7].strip()),
+            height=_row[7].strip(),
             quality=quality,
             day_of_the_year=int(_row[9].strip()),
             timezone_info=parse_timezone_info(_row[10]),
