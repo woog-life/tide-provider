@@ -3,6 +3,7 @@ import dataclasses
 import re
 from datetime import date, datetime, time, timedelta, timezone, tzinfo
 from enum import Enum, IntEnum
+from pathlib import Path
 from typing import Optional, Self
 
 # Input example: "+ 1:00"
@@ -152,9 +153,9 @@ class TideInformation:
         )
 
 
-def main():
+def parse_info(file_path: Path) -> list[TideInformation]:
     infos = []
-    with open("resources/cuxhaven_2023.txt", encoding="ISO-8859-1") as f:
+    with open(file_path, encoding="ISO-8859-1") as f:
         spamreader = csv.reader(f, delimiter="#")
         seen_data_delim = False
         for row in spamreader:
@@ -166,7 +167,11 @@ def main():
             else:
                 seen_data_delim = "LLL" in row
 
-    print(*infos, sep="\n")
+    return infos
+
+
+def main():
+    print(*parse_info(Path("resources/cuxhaven_2023.txt")), sep="\n")
 
 
 if __name__ == "__main__":
