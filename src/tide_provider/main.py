@@ -1,8 +1,8 @@
 import csv
 import dataclasses
 from datetime import datetime
-from enum import IntEnum, Enum
-from typing import Self, Optional
+from enum import Enum, IntEnum
+from typing import Optional, Self
 
 
 class LineCode(Enum):
@@ -149,5 +149,5 @@ def main():
     print(*infos, sep="\n")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
