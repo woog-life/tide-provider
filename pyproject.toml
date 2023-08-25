@@ -9,7 +9,6 @@ license = "MIT"
 tide_provider = "tide_provider.main:main"
 
 [tool.poetry.dependencies]
-pendulum = "^2.0.0"
 python = "~3.11"
 
 [tool.poetry.group.dev.dependencies]

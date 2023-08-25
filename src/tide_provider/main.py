@@ -1,8 +1,14 @@
 import csv
 import dataclasses
-from datetime import datetime
+import re
+from datetime import date, datetime, time, timedelta, timezone, tzinfo
 from enum import Enum, IntEnum
 from typing import Optional, Self
+
+# Input example: "+ 1:00"
+timezone_modifier_pattern = re.compile(
+    r"^(?P<operator>[+-])\s*(?P<hours>\d+):(?P<minutes>\d+)$"
+)
 
 
 class LineCode(Enum):
@@ -55,24 +61,30 @@ class DayOfTheWeek(Enum):
     Sunday = "So"
 
 
-@dataclasses.dataclass
-class Date:
-    date: datetime
-
-    @classmethod
-    def from_str(cls, s: str) -> Self:
-        clean: str = s.replace(" ", "")
-        return cls(date=datetime.strptime(clean, "%d.%m.%Y"))
+def parse_date(s: str) -> date:
+    clean = s.replace(" ", "")
+    return datetime.strptime(clean, "%d.%m.%Y").date()
 
 
-@dataclasses.dataclass
-class Time:
-    time: datetime
+def parse_time(s: str) -> time:
+    # hours are not 0 padded
+    return datetime.strptime(s.replace(" ", "0"), "%H:%M").time()
 
-    @classmethod
-    def from_str(cls, s: str) -> Self:
-        # hours are not 0 padded
-        return cls(time=datetime.strptime(s.replace(" ", "0"), "%H:%M"))
+
+def parse_timezone_info(timezone_modifier: str) -> tzinfo:
+    match = timezone_modifier_pattern.match(timezone_modifier)
+    if match is None:
+        raise ValueError(f"Invalid timezone_modifier: {timezone_modifier}")
+
+    delta = timedelta(
+        hours=int(match.group("hours")),
+        minutes=int(match.group("minutes")),
+    )
+
+    if match.group("operator") == "-":
+        delta = -delta
+
+    return timezone(offset=delta)
 
 
 @dataclasses.dataclass
@@ -98,19 +110,19 @@ class TideInformation:
     moon_phase: Optional[MoonPhase]
     water_level: WaterLevel
     day_of_the_week: DayOfTheWeek
-    date: Date
-    time: Time
+    date: date
+    time: time
     height: float
     # can be between 1 - 7, should this be an `Enum` with self-made names?
     quality: Optional[int]
     day_of_the_year: int
-    time_zone_modifier: TimeZoneModifier
+    timezone_info: tzinfo
     transit_number: int
     transit_direction: TransitDirection
     julian_date: float
 
     @classmethod
-    def from_row(cls, _row: list[str]):
+    def from_row(cls, _row: list[str]) -> Self:
         moon_phase = MoonPhase(int(_row[2].strip())) if _row[2].strip() else None
         quality = int(_row[8].strip()) if _row[8].strip() else None
 
@@ -120,15 +132,23 @@ class TideInformation:
             moon_phase=moon_phase,
             water_level=WaterLevel(_row[3]),
             day_of_the_week=DayOfTheWeek(_row[4]),
-            date=Date.from_str(_row[5]),
-            time=Time.from_str(_row[6]),
+            date=parse_date(_row[5]),
+            time=parse_time(_row[6]),
             height=float(_row[7].strip()),
             quality=quality,
             day_of_the_year=int(_row[9].strip()),
-            time_zone_modifier=TimeZoneModifier.from_str(_row[10]),
+            timezone_info=parse_timezone_info(_row[10]),
             transit_number=int(_row[11].strip()),
             transit_direction=TransitDirection(int(_row[12].strip())),
             julian_date=float(_row[13].strip()),
+        )
+
+    @property
+    def datetime(self) -> datetime:
+        return datetime.combine(
+            self.date,
+            self.time,
+            self.timezone_info,
         )
 
 
