@@ -201,7 +201,7 @@ def publish():
                 file_name,
                 "(This will take about two minutes)",
             )
-            client.push_tidal_data(lake_id, [info.to_dto() for info in infos[100:300]])
+            client.push_tidal_data(lake_id, [info.to_dto() for info in infos])
 
 
 if __name__ == "__main__":
