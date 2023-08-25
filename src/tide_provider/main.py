@@ -199,7 +199,7 @@ def publish():
             print(
                 "Uploading data from",
                 file_name,
-                "(This will take about two minutes)",
+                "(This will take about a minutes)",
             )
             client.push_tidal_data(lake_id, [info.to_dto() for info in infos])
 
