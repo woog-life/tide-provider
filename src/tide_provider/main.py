@@ -180,6 +180,29 @@ def parse_info(file_path: Path) -> list[TideInformation]:
     return infos
 
 
+def parse_canada_info(
+    file_path: Path, first_info_is_high_tide: bool
+) -> list[TidalDataExtremum]:
+    infos = []
+    is_high_tide = first_info_is_high_tide
+    with open(file_path, encoding="UTF-8") as f:
+        spamreader = csv.reader(f, delimiter=",")
+        is_first_line = True
+        for row in spamreader:
+            if is_first_line:
+                is_first_line = False
+                continue
+            dt = datetime.strptime(row[0], "%Y-%m-%dT%H:%M:%S")
+            isotime = dt.astimezone(timezone.utc).isoformat()
+            height = row[1]
+            infos.append(
+                {"isHighTide": is_high_tide, "time": isotime, "height": height}
+            )
+            is_high_tide = not is_high_tide
+
+    return infos
+
+
 def main():
     print(*parse_info(Path("resources/cuxhaven_2023.txt")), sep="\n")
 
