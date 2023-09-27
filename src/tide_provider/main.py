@@ -195,12 +195,8 @@ def find_lowest_height_info_index(infos: list) -> int:
 def parse_canada_info(file_path: Path) -> list[TidalDataExtremum]:
     infos = []
     with open(file_path, encoding="UTF-8") as f:
-        spamreader = csv.reader(f, delimiter=",")
-        is_first_line = True
+        spamreader = csv.reader(f.readlines()[1:], delimiter=",")
         for row in spamreader:
-            if is_first_line:
-                is_first_line = False
-                continue
             dt = datetime.strptime(row[0], "%Y-%m-%dT%H:%M:%S")
             isotime = dt.astimezone(timezone.utc).isoformat()
             height = row[1]
