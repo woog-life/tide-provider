@@ -197,7 +197,10 @@ def parse_canada_info(file_path: Path) -> list[TidalDataExtremum]:
     with open(file_path, encoding="UTF-8") as f:
         spamreader = csv.reader(f.readlines()[1:], delimiter=",")
         for row in spamreader:
-            dt = datetime.strptime(row[0], "%Y-%m-%dT%H:%M:%S")
+            dt = datetime.strptime(
+                row[0],
+                "%Y-%m-%dT%H:%M:%S",
+            )
             isotime = dt.astimezone(timezone.utc).isoformat()
             height = row[1]
             infos.append({"time": isotime, "height": height})
