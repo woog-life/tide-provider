@@ -234,7 +234,7 @@ def publish():
         infos[lake_id] = [info.to_dto() for info in data]
 
     # canada
-    for lake_id, file_name, first_info_is_high_tide in (
+    for lake_id, file_name in (
         ("fb086a0d-dc93-40fc-ad41-b6dbe0358f0b", "vancouver_2023.csv"),
     ):
         infos[lake_id] = parse_canada_info(resources / file_name)
