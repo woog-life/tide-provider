@@ -193,7 +193,7 @@ def find_lowest_height_info_index(infos: list) -> int:
 
 
 def parse_canada_info(file_path: Path) -> list[TidalDataExtremum]:
-    infos = []
+    infos: list[TidalDataExtremum] = []
     with open(file_path, encoding="UTF-8") as f:
         spamreader = csv.reader(f.readlines()[1:], delimiter=",")
         for row in spamreader:
@@ -203,15 +203,13 @@ def parse_canada_info(file_path: Path) -> list[TidalDataExtremum]:
             )
             isotime = dt.astimezone(timezone.utc).isoformat()
             height = row[1]
-            infos.append({"time": isotime, "height": height})
+            infos.append({"time": isotime, "height": height, "isHighTide": False})
 
     is_high_tide = find_lowest_height_info_index(infos) % 2 == 1
     for info in infos:
         info["isHighTide"] = is_high_tide
         is_high_tide = not is_high_tide
 
-    # PyCharm can't (reliably) detect the later addition of the `isHighTide` field
-    # noinspection PyTypeChecker
     return infos
 
 
