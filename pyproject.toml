@@ -10,7 +10,7 @@ tide_provider = "tide_provider.main:main"
 publish = "tide_provider.main:publish"
 
 [tool.poetry.dependencies]
-python = "~3.11"
+python = "~3.12"
 httpx = "^0.25.0"
 
 [tool.poetry.group.dev.dependencies]
