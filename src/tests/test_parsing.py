@@ -2,7 +2,7 @@ import dataclasses
 from pathlib import Path
 
 import pytest
-from tide_provider.main import parse_info, parse_canada_info
+from tide_provider.main import parse_canada_info, parse_info
 
 
 @pytest.mark.parametrize(
