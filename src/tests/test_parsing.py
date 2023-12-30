@@ -10,6 +10,8 @@ from tide_provider.main import parse_canada_info, parse_info
     [
         ("cuxhaven_2023.txt", 1411),
         ("husum_2023.txt", 1411),
+        ("cuxhaven_2024.txt", 1414),
+        ("husum_2024.txt", 1414),
     ],
 )
 def test_parse_resources(filename: str, item_count: int):
@@ -41,6 +43,7 @@ def test_parse_resources(filename: str, item_count: int):
     "filename,item_count",
     [
         ("vancouver_2023.csv", 1409),
+        ("vancouver_2024.csv", 1414),
     ],
 )
 def test_parse_canada_resources(filename: str, item_count: int):
