@@ -2,7 +2,7 @@ import dataclasses
 from pathlib import Path
 
 import pytest
-from tide_provider.main import parse_info
+from tide_provider.main import parse_canada_info, parse_info
 
 
 @pytest.mark.parametrize(
@@ -35,3 +35,26 @@ def test_parse_resources(filename: str, item_count: int):
     datetime = item.datetime
     assert datetime is not None
     assert datetime.tzinfo is not None
+
+
+@pytest.mark.parametrize(
+    "filename,item_count",
+    [
+        ("vancouver_2023.csv", 1409),
+    ],
+)
+def test_parse_canada_resources(filename: str, item_count: int):
+    path = Path("resources") / filename
+
+    data = parse_canada_info(path)
+    assert isinstance(data, list)
+    assert len(data) == item_count
+
+    has_high_tide = any(extremum["isHighTide"] for extremum in data)
+    assert has_high_tide, "there is no high tide in the data"
+
+    time_is_set = all(extremum["time"] not in ["", None] for extremum in data)
+    assert time_is_set, "`time` is not set on at least one extremum"
+
+    height_is_set = all(extremum["height"] not in ["", None] for extremum in data)
+    assert height_is_set, "`height` is not set on at least one extremum"

@@ -180,6 +180,39 @@ def parse_info(file_path: Path) -> list[TideInformation]:
     return infos
 
 
+def find_lowest_height_info_index(infos: list) -> int:
+    lowest = float(infos[0]["height"])
+    lowest_index = 0
+    for idx, info in enumerate(infos):
+        height = float(info["height"])
+        if height < lowest:
+            lowest = height
+            lowest_index = idx
+
+    return lowest_index
+
+
+def parse_canada_info(file_path: Path) -> list[TidalDataExtremum]:
+    infos: list[TidalDataExtremum] = []
+    with open(file_path, encoding="UTF-8") as f:
+        spamreader = csv.reader(f.readlines()[1:], delimiter=",")
+        for row in spamreader:
+            dt = datetime.strptime(
+                row[0],
+                "%Y-%m-%dT%H:%M:%S",
+            )
+            isotime = dt.astimezone(timezone.utc).isoformat()
+            height = row[1]
+            infos.append({"time": isotime, "height": height, "isHighTide": False})
+
+    is_high_tide = find_lowest_height_info_index(infos) % 2 == 1
+    for info in infos:
+        info["isHighTide"] = is_high_tide
+        is_high_tide = not is_high_tide
+
+    return infos
+
+
 def main():
     print(*parse_info(Path("resources/cuxhaven_2023.txt")), sep="\n")
 
@@ -190,18 +223,30 @@ def publish():
         raise ValueError("Missing WOOG_API_TOKEN env var")
 
     resources = Path("resources")
+
+    infos = dict()
+    # germany
+    for lake_id, file_name in (
+        ("d074654c-dedd-46c3-8042-af55c93c910e", "cuxhaven_2023.txt"),
+        ("18e6931a-3729-4ad9-8301-03c5980f82b6", "husum_2023.txt"),
+    ):
+        data = parse_info(resources / file_name)
+        infos[lake_id] = [info.to_dto() for info in data]
+
+    # canada
+    for lake_id, file_name in (
+        ("fb086a0d-dc93-40fc-ad41-b6dbe0358f0b", "vancouver_2023.csv"),
+    ):
+        infos[lake_id] = parse_canada_info(resources / file_name)
+
     with ApiClient(token) as client:
-        for lake_id, file_name in (
-            ("d074654c-dedd-46c3-8042-af55c93c910e", "cuxhaven_2023.txt"),
-            ("18e6931a-3729-4ad9-8301-03c5980f82b6", "husum_2023.txt"),
-        ):
-            infos = parse_info(resources / file_name)
+        for lake_id, infos in infos.items():
             print(
                 "Uploading data from",
                 file_name,
-                "(This will take about a minutes)",
+                "(This will take about a minute)",
             )
-            client.push_tidal_data(lake_id, [info.to_dto() for info in infos])
+            client.push_tidal_data(lake_id, infos)
 
 
 if __name__ == "__main__":
