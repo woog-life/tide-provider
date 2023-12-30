@@ -245,8 +245,8 @@ def publish():
     with ApiClient(token) as client:
         for lake_id, infos in infos.items():
             print(
-                "Uploading data from",
-                file_name,
+                "Uploading data for",
+                lake_id,
                 "(This will take about a minute)",
             )
             client.push_tidal_data(lake_id, infos)
