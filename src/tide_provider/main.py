@@ -229,6 +229,8 @@ def publish():
     for lake_id, file_name in (
         ("d074654c-dedd-46c3-8042-af55c93c910e", "cuxhaven_2023.txt"),
         ("18e6931a-3729-4ad9-8301-03c5980f82b6", "husum_2023.txt"),
+        ("d074654c-dedd-46c3-8042-af55c93c910e", "cuxhaven_2024.txt"),
+        ("18e6931a-3729-4ad9-8301-03c5980f82b6", "husum_2024.txt"),
     ):
         data = parse_info(resources / file_name)
         infos[lake_id] = [info.to_dto() for info in data]
@@ -236,6 +238,7 @@ def publish():
     # canada
     for lake_id, file_name in (
         ("fb086a0d-dc93-40fc-ad41-b6dbe0358f0b", "vancouver_2023.csv"),
+        ("fb086a0d-dc93-40fc-ad41-b6dbe0358f0b", "vancouver_2024.csv"),
     ):
         infos[lake_id] = parse_canada_info(resources / file_name)
 
