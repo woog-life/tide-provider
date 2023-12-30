@@ -1,11 +1,12 @@
 import csv
 import dataclasses
-import os
 import re
 from datetime import date, datetime, time, timedelta, timezone, tzinfo
 from enum import Enum, IntEnum
 from pathlib import Path
 from typing import Optional, Self
+
+from bs_config import Env
 
 from tide_provider.api import ApiClient, TidalDataExtremum
 
@@ -218,9 +219,8 @@ def main():
 
 
 def publish():
-    token = os.getenv("WOOG_API_TOKEN")
-    if not token:
-        raise ValueError("Missing WOOG_API_TOKEN env var")
+    env = Env.load(include_default_dotenv=True)
+    token = env.get_string("WOOG_API_TOKEN", required=True)
 
     resources = Path("resources")
 
