@@ -22,7 +22,7 @@ python = "~3.12"
 [tool.poetry.group.dev.dependencies]
 black = "^24.0.0"
 mypy = "~1.8"
-pytest = "^7.1.2"
+pytest = "^8.0.0"
 ruff = "0.1.14"
 
 [build-system]
